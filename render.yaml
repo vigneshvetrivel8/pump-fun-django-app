@@ -6,10 +6,14 @@ services:
     name: my-django-app
     env: python
     plan: free
-    # Build command: Installs dependencies
-    buildCommand: "pip install -r requirements.txt"
-    # Start command: Runs the Gunicorn web server
-    # ✅ THIS LINE IS NOW CORRECT FOR YOUR PROJECT
+    # Build command with swap file to prevent out-of-memory errors
+    buildCommand: |
+      fallocate -l 1G /swapfile
+      chmod 600 /swapfile
+      mkswap /swapfile
+      swapon /swapfile
+      pip install -r requirements.txt
+    # ⚠️ CRITICAL: Replace 'myproject.wsgi' with your project's name!
     startCommand: "gunicorn pumpfunproject.wsgi"
     envVars:
       - key: PYTHON_VERSION
@@ -20,8 +24,13 @@ services:
     name: pump-listener-worker
     env: python
     plan: free
-    # Build command: Installs dependencies
-    buildCommand: "pip install -r requirements.txt"
+    # Build command with swap file to prevent out-of-memory errors
+    buildCommand: |
+      fallocate -l 1G /swapfile
+      chmod 600 /swapfile
+      mkswap /swapfile
+      swapon /swapfile
+      pip install -r requirements.txt
     # Start command: Runs your custom management command
     startCommand: "python manage.py run_pump_listener"
     envVars:
