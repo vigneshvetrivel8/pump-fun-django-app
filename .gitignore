@@ -1,0 +1,19 @@
+# .gitignore
+
+# Python
+__pycache__/
+*.pyc
+
+# Django
+db.sqlite3
+*.log
+
+# Environment
+.env
+venv/
+env/
+
+# System / OS generated files
+.DS_Store
+Thumbs.db
+**/Zone.Identifier

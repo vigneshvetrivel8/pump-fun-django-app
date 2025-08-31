@@ -1,0 +1,29 @@
+# render.yaml
+
+services:
+  # A Web Service for your Django App
+  - type: web
+    name: my-django-app
+    env: python
+    plan: free
+    # Build command: Installs dependencies
+    buildCommand: "pip install -r requirements.txt"
+    # Start command: Runs the Gunicorn web server
+    # ✅ THIS LINE IS NOW CORRECT FOR YOUR PROJECT
+    startCommand: "gunicorn pumpfunproject.wsgi"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.4
+
+  # A Background Worker for your listener script
+  - type: worker
+    name: pump-listener-worker
+    env: python
+    plan: free
+    # Build command: Installs dependencies
+    buildCommand: "pip install -r requirements.txt"
+    # Start command: Runs your custom management command
+    startCommand: "python manage.py run_pump_listener"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.4

@@ -1,0 +1,4 @@
+# requirements.txt
+django
+gunicorn
+websockets
